@@ -34,6 +34,7 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
     tag,
     membershipLevel,
     brand,
+    category,
     inStock = true,
     seller,
     batteryHealth,
@@ -41,6 +42,9 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
     location,
     postedDate,
   } = product;
+
+  // Kiểm tra xem có phải xe máy hoặc ô tô không
+  const isVehicle = category === 'motorcycle' || category === 'car';
 
   // Định nghĩa màu sắc cho từng gói membership
   const getMembershipColor = (level) => {
@@ -227,36 +231,111 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
 
         {/* Actions */}
         <div className={styles.actions}>
-          <Button
-            type="primary"
-            icon={<ShoppingCartOutlined />}
-            block
-            size="large"
-            className={styles.addToCartButton}
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddToCart(product);
-            }}
-            disabled={!inStock}
-          >
-            {inStock ? "Thêm vào giỏ" : "Hết hàng"}
-          </Button>
-          <Button
-            icon={<EyeOutlined />}
-            block
-            size="large"
-            className={styles.viewDetailsButton}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onViewDetails) {
-                onViewDetails(product);
-              } else {
-                navigate(`/product/${id}`);
-              }
-            }}
-          >
-            Xem chi tiết
-          </Button>
+          {isVehicle ? (
+            <>
+              <Button
+                type="primary"
+                icon={<UserOutlined />}
+                block
+                size="large"
+                className={styles.addToCartButton}
+                style={{
+                  background: 'linear-gradient(135deg, #52c41a 0%, #389e0d 100%)',
+                  border: 'none',
+                  color: 'white'
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onViewDetails) {
+                    onViewDetails(product);
+                  } else {
+                    navigate(`/product/${id}`);
+                  }
+                }}
+                disabled={!inStock}
+              >
+                {!inStock ? "Hết hàng" : "Để lại thông tin"}
+              </Button>
+              <Button
+                icon={<EyeOutlined />}
+                block
+                size="large"
+                className={styles.viewDetailsButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onViewDetails) {
+                    onViewDetails(product);
+                  } else {
+                    navigate(`/product/${id}`);
+                  }
+                }}
+              >
+                Xem chi tiết
+              </Button>
+            </>
+          ) : (
+            <>
+              <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                <Button
+                  type="primary"
+                  icon={<ShoppingCartOutlined />}
+                  size="large"
+                  style={{ 
+                    flex: 1,
+                    minWidth: 0,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onAddToCart(product);
+                  }}
+                  disabled={!inStock}
+                >
+                  Thêm giỏ
+                </Button>
+                <Button
+                  type="primary"
+                  icon={<ShoppingCartOutlined />}
+                  size="large"
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    border: 'none',
+                    color: 'white',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/payment', { state: { product, quantity: 1 } });
+                  }}
+                  disabled={!inStock}
+                >
+                  Mua ngay
+                </Button>
+              </div>
+              <Button
+                icon={<EyeOutlined />}
+                block
+                size="large"
+                className={styles.viewDetailsButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onViewDetails) {
+                    onViewDetails(product);
+                  } else {
+                    navigate(`/product/${id}`);
+                  }
+                }}
+              >
+                Xem chi tiết
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </Card>

@@ -1,0 +1,158 @@
+.customerPage {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding-top: 80px; /* Thêm padding để tránh bị header che */
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.pageTitle {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pageSubtitle {
+  font-size: 16px;
+  color: #8c8c8c;
+  margin: 8px 0 0 0;
+}
+
+.statCard {
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.statCard :global(.ant-statistic-title) {
+  font-size: 14px;
+  font-weight: 600;
+  color: #595959;
+  margin-bottom: 8px;
+}
+
+.statCard :global(.ant-statistic-content) {
+  font-size: 28px;
+}
+
+.tableCard {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: none;
+}
+
+.tableCard :global(.ant-card-head) {
+  border-bottom: 2px solid #f0f0f0;
+  padding: 20px 24px;
+}
+
+.tableCard :global(.ant-card-body) {
+  padding: 24px;
+}
+
+.tableCard :global(.ant-table) {
+  font-size: 14px;
+}
+
+.tableCard :global(.ant-table-thead > tr > th) {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  font-weight: 600;
+  color: #262626;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+.tableCard :global(.ant-table-tbody > tr:hover > td) {
+  background: #f0f5ff;
+}
+
+.productModal :global(.ant-modal-header) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px 8px 0 0;
+  padding: 20px 24px;
+}
+
+.productModal :global(.ant-modal-title) {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.productModal :global(.ant-modal-close-x) {
+  color: white;
+}
+
+.productModal :global(.ant-form-item-label > label) {
+  font-weight: 600;
+  color: #262626;
+}
+
+.productModal :global(.ant-upload-list-picture-card-container) {
+  width: 104px;
+  height: 104px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pageHeader {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .pageTitle {
+    font-size: 24px;
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+  .statCard :global(.ant-statistic-content) {
+    font-size: 24px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.statCard {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.tableCard {
+  animation: fadeIn 0.6s ease-out;
+}

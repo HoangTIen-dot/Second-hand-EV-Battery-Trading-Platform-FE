@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiMenu, FiX, FiShoppingCart } from "react-icons/fi";
 import { Button, Badge, Avatar, Dropdown } from "antd";
 import { MenuOutlined, CloseOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
+import { useCart } from "../../../contexts/CartContext";
 import "./index.css";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const { getCartCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
+
+  const cartCount = getCartCount();
 
   const navItems = [
     { id: 1, name: "Home", href: "#" },
@@ -98,22 +103,15 @@ const Header = () => {
 
           {/* Shopping cart */}
           <div style={{ position: 'relative' }}>
-            <Badge count={cartCount} size="small">
+            <Badge count={cartCount} size="small" offset={[-5, 5]}>
               <Button
                 type="text"
                 shape="circle"
                 icon={<ShoppingCartOutlined style={{ fontSize: '20px' }} />}
-                onClick={toggleCart}
+                onClick={() => navigate('/cart')}
                 aria-label="Shopping cart"
               />
             </Badge>
-            
-            {isCartOpen && (
-              <div className="dropdown-menu">
-                <h3 className="dropdown-title">Shopping Cart</h3>
-                <p className="dropdown-text">Your cart is empty</p>
-              </div>
-            )}
           </div>
 
           {/* User avatar with dropdown */}

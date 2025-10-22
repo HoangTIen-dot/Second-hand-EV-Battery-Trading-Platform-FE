@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Modal,
   Row,
@@ -16,6 +17,9 @@ import {
   List,
   Typography,
   Progress,
+  Form,
+  Input,
+  message,
 } from 'antd';
 import {
   ShoppingCartOutlined,
@@ -31,14 +35,18 @@ import {
   CheckCircleOutlined,
   WarningOutlined,
   CalendarOutlined,
+  CreditCardOutlined,
 } from '@ant-design/icons';
 import styles from './ProductDetailModal.module.css';
 
 const { Title, Text, Paragraph } = Typography;
 
 const ProductDetailModal = ({ visible, product, onClose, onAddToCart }) => {
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [contactForm] = Form.useForm();
 
   if (!product) return null;
 
@@ -46,6 +54,7 @@ const ProductDetailModal = ({ visible, product, onClose, onAddToCart }) => {
     id,
     name,
     brand,
+    category,
     price,
     originalPrice,
     image,
@@ -90,12 +99,29 @@ const ProductDetailModal = ({ visible, product, onClose, onAddToCart }) => {
 
   const membershipInfo = getMembershipColor(membershipLevel);
 
+  // Kiểm tra xem có phải xe máy hoặc ô tô không
+  const isVehicle = category === 'motorcycle' || category === 'car';
+
   const handleAddToCart = () => {
     onAddToCart({ ...product, quantity });
-    Modal.success({
-      title: 'Thành công!',
-      content: `Đã thêm ${quantity} sản phẩm vào giỏ hàng`,
-    });
+    message.success(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`);
+  };
+
+  const handleBuyNow = () => {
+    if (isVehicle) {
+      setShowContactForm(true);
+    } else {
+      onClose();
+      navigate('/payment', { state: { product, quantity } });
+    }
+  };
+
+  const handleSubmitContactForm = (values) => {
+    console.log('Contact form values:', values);
+    message.success('Thông tin của bạn đã được gửi! Nhân viên sẽ liên hệ lại trong thời gian sớm nhất.');
+    contactForm.resetFields();
+    setShowContactForm(false);
+    onClose();
   };
 
   const handleContactSeller = () => {
@@ -305,39 +331,133 @@ const ProductDetailModal = ({ visible, product, onClose, onAddToCart }) => {
 
             {/* Quantity & Actions */}
             <div className={styles.actionSection}>
-              <div className={styles.quantitySection}>
-                <Text strong>Số lượng:</Text>
-                <InputNumber
-                  min={1}
-                  max={10}
-                  value={quantity}
-                  onChange={setQuantity}
-                  style={{ width: 100, margin: '0 12px' }}
-                />
-                <Text type="secondary">(Còn {Math.floor(Math.random() * 10 + 1)} sản phẩm)</Text>
-              </div>
+              {!isVehicle && (
+                <div className={styles.quantitySection}>
+                  <Text strong>Số lượng:</Text>
+                  <InputNumber
+                    min={1}
+                    max={10}
+                    value={quantity}
+                    onChange={setQuantity}
+                    style={{ width: 100, margin: '0 12px' }}
+                  />
+                  <Text type="secondary">(Còn {Math.floor(Math.random() * 10 + 1)} sản phẩm)</Text>
+                </div>
+              )}
 
-              <Space direction="vertical" size="middle" style={{ width: '100%', marginTop: 16 }}>
-                <Button
-                  type="primary"
-                  size="large"
-                  icon={<ShoppingCartOutlined />}
-                  onClick={handleAddToCart}
-                  disabled={!inStock}
-                  block
-                  style={{ height: 50, fontSize: 16, fontWeight: 600 }}
-                >
-                  {inStock ? 'Thêm vào giỏ hàng' : 'Hết hàng'}
-                </Button>
-                <Space style={{ width: '100%', justifyContent: 'center' }}>
-                  <Button icon={<HeartOutlined />} size="large">
-                    Yêu thích
-                  </Button>
-                  <Button icon={<ShareAltOutlined />} size="large">
-                    Chia sẻ
-                  </Button>
+              {showContactForm && isVehicle ? (
+                <div style={{ marginTop: 16, padding: 20, background: '#f5f5f5', borderRadius: 8 }}>
+                  <Title level={5} style={{ marginBottom: 8 }}>
+                    <UserOutlined style={{ marginRight: 8 }} />
+                    Để lại thông tin liên hệ
+                  </Title>
+                  <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
+                    Vui lòng điền thông tin để nhân viên tư vấn liên hệ lại với bạn về sản phẩm này
+                  </Text>
+                  <Form
+                    form={contactForm}
+                    layout="vertical"
+                    onFinish={handleSubmitContactForm}
+                  >
+                    <Form.Item
+                      name="fullName"
+                      label="Họ và tên"
+                      rules={[{ required: true, message: 'Vui lòng nhập họ tên' }]}
+                    >
+                      <Input placeholder="Nguyễn Văn A" size="large" />
+                    </Form.Item>
+                    <Form.Item
+                      name="phone"
+                      label="Số điện thoại"
+                      rules={[
+                        { required: true, message: 'Vui lòng nhập số điện thoại' },
+                        { pattern: /^[0-9]{10}$/, message: 'Số điện thoại không hợp lệ (10 số)' }
+                      ]}
+                    >
+                      <Input placeholder="0901234567" size="large" />
+                    </Form.Item>
+                    <Form.Item
+                      name="email"
+                      label="Email"
+                      rules={[
+                        { required: true, message: 'Vui lòng nhập email' },
+                        { type: 'email', message: 'Email không hợp lệ' }
+                      ]}
+                    >
+                      <Input placeholder="example@email.com" size="large" />
+                    </Form.Item>
+                    <Form.Item
+                      name="note"
+                      label="Ghi chú (không bắt buộc)"
+                    >
+                      <Input.TextArea 
+                        placeholder="Thời gian thuận tiện để liên hệ, câu hỏi cần tư vấn..." 
+                        rows={3}
+                        size="large"
+                      />
+                    </Form.Item>
+                    <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
+                      <Button onClick={() => setShowContactForm(false)} size="large">
+                        Hủy
+                      </Button>
+                      <Button type="primary" htmlType="submit" size="large" icon={<UserOutlined />}>
+                        Gửi thông tin
+                      </Button>
+                    </Space>
+                  </Form>
+                </div>
+              ) : (
+                <Space direction="vertical" size="middle" style={{ width: '100%', marginTop: 16 }}>
+                  <Space style={{ width: '100%', gap: 12 }}>
+                    {!isVehicle && (
+                      <Button
+                        type="default"
+                        size="large"
+                        icon={<ShoppingCartOutlined />}
+                        onClick={handleAddToCart}
+                        disabled={!inStock}
+                        style={{ 
+                          flex: 1,
+                          height: 50, 
+                          fontSize: 16, 
+                          fontWeight: 600,
+                          borderColor: '#1890ff',
+                          color: '#1890ff'
+                        }}
+                      >
+                        Thêm giỏ hàng
+                      </Button>
+                    )}
+                    <Button
+                      type="primary"
+                      size="large"
+                      icon={isVehicle ? <UserOutlined /> : <CreditCardOutlined />}
+                      onClick={handleBuyNow}
+                      disabled={!inStock}
+                      style={{ 
+                        flex: 1,
+                        height: 50, 
+                        fontSize: 16, 
+                        fontWeight: 600,
+                        background: isVehicle 
+                          ? 'linear-gradient(135deg, #52c41a 0%, #389e0d 100%)' 
+                          : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        border: 'none'
+                      }}
+                    >
+                      {isVehicle ? 'Để lại thông tin' : 'Mua ngay'}
+                    </Button>
+                  </Space>
+                  <Space style={{ width: '100%', justifyContent: 'center' }}>
+                    <Button icon={<HeartOutlined />} size="large">
+                      Yêu thích
+                    </Button>
+                    <Button icon={<ShareAltOutlined />} size="large">
+                      Chia sẻ
+                    </Button>
+                  </Space>
                 </Space>
-              </Space>
+              )}
             </div>
 
             {/* Additional Info */}

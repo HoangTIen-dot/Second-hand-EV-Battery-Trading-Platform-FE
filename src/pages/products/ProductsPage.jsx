@@ -8,6 +8,7 @@ import {
   FAQSection,
 } from "../../components/products";
 import ProductDetailModal from "../../components/products/ProductDetailModal/ProductDetailModal";
+import { useCart } from "../../contexts/CartContext";
 import {
   getRandomSeller,
   getRandomLocation,
@@ -21,8 +22,10 @@ import styles from "./Products.module.css";
 const { Search } = Input;
 
 const Products = () => {
+  const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
+    categories: [],
     priceRange: [0, 99999999999], // VND: 0 - 1,500 triệu (để bao gồm cả xe ô tô điện)
     capacityRange: [0, 100],
     brands: [],
@@ -1032,6 +1035,7 @@ const Products = () => {
       id: 49,
       name: "Xe Máy Điện VinFast Klara S",
       brand: "VinFast",
+      category: "motorcycle",
       capacity: 2.4,
       voltage: 60,
       warranty: 2,
@@ -1056,6 +1060,7 @@ const Products = () => {
       id: 50,
       name: "Xe Máy Điện Dat Bike Weaver 200",
       brand: "Dat Bike",
+      category: "motorcycle",
       capacity: 2.5,
       voltage: 60,
       warranty: 3,
@@ -1080,6 +1085,7 @@ const Products = () => {
       id: 51,
       name: "Xe Máy Điện Yadea G5",
       brand: "Yadea",
+      category: "motorcycle",
       capacity: 1.8,
       voltage: 48,
       warranty: 2,
@@ -1104,6 +1110,7 @@ const Products = () => {
       id: 52,
       name: "Xe Máy Điện Pega eSH",
       brand: "Pega",
+      category: "motorcycle",
       capacity: 2.2,
       voltage: 60,
       warranty: 2,
@@ -1128,6 +1135,7 @@ const Products = () => {
       id: 53,
       name: "Xe Máy Điện Dibao Smart",
       brand: "Dibao",
+      category: "motorcycle",
       capacity: 1.5,
       voltage: 48,
       warranty: 1,
@@ -1152,6 +1160,7 @@ const Products = () => {
       id: 54,
       name: "Xe Máy Điện Anbico Ap1518",
       brand: "Anbico",
+      category: "motorcycle",
       capacity: 1.6,
       voltage: 48,
       warranty: 1,
@@ -1178,6 +1187,7 @@ const Products = () => {
       id: 55,
       name: "Xe Ô Tô Điện VinFast VF e34",
       brand: "VinFast",
+      category: "car",
       capacity: 42,
       voltage: 350,
       warranty: 3,
@@ -1202,6 +1212,7 @@ const Products = () => {
       id: 56,
       name: "Xe Ô Tô Điện VinFast VF 8",
       brand: "VinFast",
+      category: "car",
       capacity: 87,
       voltage: 400,
       warranty: 3,
@@ -1226,6 +1237,7 @@ const Products = () => {
       id: 57,
       name: "Xe Ô Tô Điện Hyundai Kona Electric",
       brand: "Hyundai",
+      category: "car",
       capacity: 64,
       voltage: 356,
       warranty: 2,
@@ -1250,6 +1262,7 @@ const Products = () => {
       id: 58,
       name: "Xe Ô Tô Điện Kia EV6",
       brand: "Kia",
+      category: "car",
       capacity: 77,
       voltage: 400,
       warranty: 3,
@@ -1274,6 +1287,7 @@ const Products = () => {
       id: 59,
       name: "Xe Ô Tô Điện MG ZS EV",
       brand: "MG",
+      category: "car",
       capacity: 51,
       voltage: 350,
       warranty: 2,
@@ -1298,6 +1312,7 @@ const Products = () => {
       id: 60,
       name: "Xe Ô Tô Điện BYD Atto 3",
       brand: "BYD",
+      category: "car",
       capacity: 60,
       voltage: 400,
       warranty: 3,
@@ -1334,6 +1349,7 @@ const Products = () => {
 
   const handleResetFilters = () => {
     setFilters({
+      categories: [],
       priceRange: [0, 360000000], // VND: 0 - 360 triệu
       capacityRange: [0, 100],
       brands: [],
@@ -1378,8 +1394,7 @@ const Products = () => {
   };
 
   const handleAddToCart = (product) => {
-    console.log("Thêm vào giỏ hàng:", product);
-    // Implement your cart logic here
+    addToCart(product, 1);
   };
 
   // Enrich products with seller info if not present
@@ -1402,6 +1417,14 @@ const Products = () => {
       !product.brand.toLowerCase().includes(searchQuery.toLowerCase())
     ) {
       return false;
+    }
+
+    // Category filter
+    if (filters.categories && filters.categories.length > 0) {
+      const productCategory = product.category || 'battery';
+      if (!filters.categories.includes(productCategory)) {
+        return false;
+      }
     }
 
     // Price filter

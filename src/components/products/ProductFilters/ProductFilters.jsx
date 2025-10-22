@@ -9,6 +9,7 @@ import {
   Collapse,
   InputNumber,
   Tag,
+  Typography,
 } from "antd";
 import {
   FilterOutlined,
@@ -19,8 +20,10 @@ import {
 import styles from "./ProductFilters.module.css";
 
 const { Panel } = Collapse;
+const { Text } = Typography;
 
 const ProductFilters = ({ onFilterChange, onResetFilters }) => {
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 1500000000]); // 0 - 1,500 triệu VND (bao gồm xe ô tô điện)
   const [capacityRange, setCapacityRange] = useState([0, 100]);
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -41,6 +44,12 @@ const ProductFilters = ({ onFilterChange, onResetFilters }) => {
     { label: "Kia", value: "kia" },
     { label: "MG", value: "mg" },
     { label: "BYD", value: "byd" },
+  ];
+
+  const categories = [
+    { label: "🔋 Pin điện", value: "battery", color: "#722ed1" },
+    { label: "🏍️ Xe máy điện", value: "motorcycle", color: "#1890ff" },
+    { label: "🚗 Ô tô điện", value: "car", color: "#52c41a" },
   ];
 
   const conditions = [
@@ -77,6 +86,7 @@ const ProductFilters = ({ onFilterChange, onResetFilters }) => {
 
   const handleApplyFilters = () => {
     const filters = {
+      categories: selectedCategories,
       priceRange,
       capacityRange,
       brands: selectedBrands,
@@ -90,6 +100,7 @@ const ProductFilters = ({ onFilterChange, onResetFilters }) => {
   };
 
   const handleReset = () => {
+    setSelectedCategories([]);
     setPriceRange([0, 1500000000]);
     setCapacityRange([0, 100]);
     setSelectedBrands([]);
@@ -102,6 +113,7 @@ const ProductFilters = ({ onFilterChange, onResetFilters }) => {
   };
 
   const activeFiltersCount = 
+    selectedCategories.length +
     selectedBrands.length +
     selectedConditions.length +
     selectedMemberships.length +
@@ -121,10 +133,32 @@ const ProductFilters = ({ onFilterChange, onResetFilters }) => {
       </div>
 
       <Collapse
-        defaultActiveKey={["price", "capacity", "brands", "membership", "location", "condition"]}
+        defaultActiveKey={["category", "price", "capacity", "brands", "membership", "location", "condition"]}
         ghost
         expandIconPosition="end"
       >
+        {/* Category Filter */}
+        <Panel header={<span className={styles.panelHeader}>🔍 Loại sản phẩm</span>} key="category">
+          <Checkbox.Group
+            value={selectedCategories}
+            onChange={setSelectedCategories}
+            className={styles.checkboxGroup}
+          >
+            <Space direction="vertical" style={{ width: "100%" }}>
+              {categories.map((category) => (
+                <div key={category.value} className={styles.checkboxItem}>
+                  <Checkbox value={category.value}>
+                    <span style={{ fontWeight: 500, fontSize: "14px" }}>
+                      {category.label}
+                    </span>
+                  </Checkbox>
+                </div>
+              ))}
+            </Space>
+          </Checkbox.Group>
+          
+        </Panel>
+
         {/* Price Range */}
         <Panel header={<span className={styles.panelHeader}><DollarOutlined /> Khoảng giá</span>} key="price">
           <div className={styles.rangeFilter}>

@@ -1,0 +1,339 @@
+.packagesPage {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding-top: 80px;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* Hero Section */
+.heroSection {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.heroContent {
+  margin-bottom: 32px;
+}
+
+.heroTitle {
+  font-size: 48px !important;
+  font-weight: 800 !important;
+  margin-bottom: 16px !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSubtitle {
+  font-size: 18px;
+  color: #595959;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.periodToggle {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.periodButton {
+  height: 48px;
+  padding: 0 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+}
+
+/* Package Cards */
+.packagesGrid {
+  margin-bottom: 64px;
+}
+
+.packageCard {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+  height: 100%;
+  border: 2px solid transparent;
+}
+
+.packageCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* .popularCard {
+  border: 2px solid #ff4d4f;
+  box-shadow: 0 8px 30px rgba(255, 77, 79, 0.2);
+} */
+
+.packageHeader {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.packageIcon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.packageName {
+  margin: 16px 0 8px !important;
+  font-size: 28px !important;
+  font-weight: 700 !important;
+}
+
+.packageDescription {
+  font-size: 14px;
+  color: #8c8c8c;
+}
+
+.packagePrice {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.priceAmount {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+
+.currency {
+  font-size: 20px;
+  font-weight: 600;
+  color: #595959;
+}
+
+.amount {
+  font-size: 40px;
+  font-weight: 800;
+  color: #262626;
+}
+
+.period {
+  font-size: 16px;
+  color: #8c8c8c;
+}
+
+.savingsTag {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.featuresList {
+  padding: 16px 0;
+}
+
+.featureItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.featureItem:last-child {
+  border-bottom: none;
+}
+
+.unavailable {
+  opacity: 0.4;
+}
+
+.featureIcon {
+  font-size: 18px;
+}
+
+.featureLabel {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.featureValue {
+  font-weight: 600;
+  margin: 0;
+}
+
+.selectButton:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Comparison Section */
+.comparisonSection {
+  margin-bottom: 64px;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 36px !important;
+  font-weight: 700 !important;
+  margin-bottom: 32px !important;
+  color: #262626;
+}
+
+.comparisonCard {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.comparisonTable {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 250px repeat(4, 1fr);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  padding: 24px 16px;
+  border-radius: 8px 8px 0 0;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 250px repeat(4, 1fr);
+  padding: 20px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  align-items: center;
+}
+
+.tableRow:hover {
+  background: #f5f5f5;
+}
+
+.featureColumn {
+  padding: 0 16px;
+  text-align: left;
+}
+
+.packageColumn {
+  text-align: center;
+  padding: 0 16px;
+}
+
+/* FAQ Section */
+.faqSection {
+  margin-bottom: 32px;
+}
+
+.faqCard {
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.faqCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.faqCard h4 {
+  color: #262626;
+  margin-bottom: 12px !important;
+}
+
+.faqCard p {
+  color: #595959;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .heroTitle {
+    font-size: 36px !important;
+  }
+
+  .tableHeader,
+  .tableRow {
+    grid-template-columns: 200px repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 28px !important;
+  }
+
+  .heroSubtitle {
+    font-size: 16px;
+  }
+
+  .periodToggle {
+    flex-direction: column;
+  }
+
+  .periodButton {
+    width: 100%;
+  }
+
+  .amount {
+    font-size: 32px;
+  }
+
+  .comparisonTable {
+    overflow-x: scroll;
+  }
+
+  .tableHeader,
+  .tableRow {
+    min-width: 800px;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.packageCard {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.packageCard:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.packageCard:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.packageCard:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.packageCard:nth-child(4) {
+  animation-delay: 0.4s;
+}
